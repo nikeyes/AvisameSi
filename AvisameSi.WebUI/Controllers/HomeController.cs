@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using AvisameSi.ServiceLibrary;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,9 @@ namespace AvisameSi.WebUI.Controllers
     {
         public ActionResult Index()
         {
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
-            IDatabase db = redis.GetDatabase();
-            string value = "abcdefg";
-            db.StringSet("mykey", value);
-            value = db.StringGet("mykey");
-            ViewBag.value = value;
+            ConnectionMultiplexer redisConn = ConnectionMultiplexer.Connect("localhost");
+            AvisameSiService service = new AvisameSiService(redisConn);
+            service.Register("jorge", "test");
             return View();
         }
 
