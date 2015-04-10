@@ -1,0 +1,51 @@
+﻿@section styles {
+    <link rel="stylesheet" href="~/Content/Account/Account.css">
+}
+
+<div class="container">
+
+    <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+            <section class="login-form">
+                <form method="post" action="@Url.Action("Register", "Account")" role="login">
+                    <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" />
+                    <input type="email" name="email" id="email" placeholder="Email" required class="form-control input-lg" value="" />
+
+                    <input type="password" class="form-control input-lg" id="password" name="password" placeholder="Password" required="" />
+                    <input type="password" class="form-control input-lg" id="passwordRepeat" name="passwordRepeat" placeholder="Password" required="" />
+
+
+                    <div class="pwstrength_viewport_progress"></div>
+
+
+                    <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Create Account</button>
+                    <div>
+                        @Html.ActionLink("Login","Login", "Account")
+                    </div>
+
+                </form>
+
+                <div class="form-links">
+                    <a href="#">www.avisamesi.com</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-4"></div>
+
+
+    </div>
+
+    @section scripts {
+        <script type="text/javascript" src="~/Scripts/Account/Account.js"></script>
+    }
+
+
+    @{
+        ViewBag.Title = "Register";
+    }
+
+    <h2>Register</h2>
+

@@ -1,4 +1,7 @@
-﻿using AvisameSi.ServiceLibrary;
+﻿using AvisameSi.Redis.Infrastructure;
+using AvisameSi.ServiceLibrary;
+using AvisameSi.ServiceLibrary.Implementations;
+using AvisameSi.ServiceLibrary.RespositoryContracts;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -12,9 +15,8 @@ namespace AvisameSi.WebUI.Controllers
     {
         public ActionResult Index()
         {
-            ConnectionMultiplexer redisConn = ConnectionMultiplexer.Connect("localhost");
-            AvisameSiService service = new AvisameSiService(redisConn);
-            service.Register("jorge", "test");
+            
+            
             return View();
         }
 

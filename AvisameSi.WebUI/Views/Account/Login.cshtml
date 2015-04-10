@@ -1,0 +1,39 @@
+﻿@section styles {
+<link rel="stylesheet" href="~/Content/Account/Account.css">
+}
+
+<div class="container">
+
+    <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+            <section class="login-form">
+                <form method="post" action="@Url.Action("Login", "Account")" role="login">
+                    <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" />
+                    <input type="email" name="email" id="email" placeholder="Email" required class="form-control input-lg" value="" />
+
+                    <input type="password" class="form-control input-lg" id="password" name="password" placeholder="Password" required="" />
+
+                    <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+                    <div>
+                        @Html.ActionLink("Create account", "Register", "Account") or <a href="#">reset password</a>
+                    </div>
+
+                </form>
+
+                <div class="form-links">
+                    <a href="#">www.avisamesi.com</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-4"></div>
+
+
+    </div>
+
+    @section scripts {
+        <script type="text/javascript" src="~/Scripts/Account/Account.js"></script>
+    }
+
