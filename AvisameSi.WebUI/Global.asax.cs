@@ -1,4 +1,8 @@
-﻿using StackExchange.Redis;
+﻿using AvisameSi.Redis.Infrastructure;
+using AvisameSi.ServiceLibrary.Implementations;
+using AvisameSi.ServiceLibrary.RespositoryContracts;
+using AvisameSi.WebUI.Security;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +26,19 @@ namespace AvisameSi.WebUI
 
         protected void Application_Start()
         {
+            _rediConn = ConnectionMultiplexer.Connect("localhost");
+            IAccountRepository accountRepository = new AccountRepository(_rediConn);
+            AccountService service = new AccountService(accountRepository);
+            GlobalFilters.Filters.Add(new AvisameSiAuthenticateAttribute(service));
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
 
-            _rediConn = ConnectionMultiplexer.Connect("localhost");
+
+
+           
         }
     }
 }

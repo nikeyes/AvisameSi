@@ -3,19 +3,19 @@ using System;
 
 namespace AvisameSi.ServiceLibrary.Implementations
 {
-    public class AvisameSiService
+    public class AccountService
     {
         private IAccountRepository _accountRepository;
 
-        public AvisameSiService(IAccountRepository accountRepository)
+        public AccountService(IAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;
         }
 
-        public void Register(string email, string password)
+        public string Register(string email, string password)
         {
             if (string.IsNullOrEmpty(email))
-                throw new ArgumentNullException("username");
+                throw new ArgumentNullException("email");
             if (string.IsNullOrEmpty(password))
                 throw new ArgumentNullException("password");
 
@@ -27,18 +27,29 @@ namespace AvisameSi.ServiceLibrary.Implementations
                 throw new Exception("The user already exists");
             }
 
-            _accountRepository.RegisterUser(email, password);
+            string token = _accountRepository.RegisterUser(email, password);
+            return token;
             
         }
 
-        public bool Login(string email, string password)
+        public string Login(string email, string password)
         {
             if (string.IsNullOrEmpty(email))
-                throw new ArgumentNullException("username");
+                throw new ArgumentNullException("email");
             if (string.IsNullOrEmpty(password))
                 throw new ArgumentNullException("password");
 
             return _accountRepository.Login(email, password);
+        }
+
+        public bool IsUserLogged(String email, String token)
+        {
+            if (string.IsNullOrEmpty(email))
+                throw new ArgumentNullException("email");
+            if (string.IsNullOrEmpty(token))
+                throw new ArgumentNullException("token");
+
+            return _accountRepository.IsUserLogged(email, token);
         }
     }
 }

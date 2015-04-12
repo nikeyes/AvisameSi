@@ -1,5 +1,6 @@
 ﻿using AvisameSi.Redis.Infrastructure;
 using AvisameSi.ServiceLibrary;
+using AvisameSi.ServiceLibrary.Entities;
 using AvisameSi.ServiceLibrary.Implementations;
 using AvisameSi.ServiceLibrary.RespositoryContracts;
 using StackExchange.Redis;
@@ -15,9 +16,28 @@ namespace AvisameSi.WebUI.Controllers
     {
         public ActionResult Index()
         {
-            
-            
-            return View();
+
+            IPostRepository postRepository = new PostRepository(MvcApplication.RedisConn);
+            PostService service = new PostService(postRepository);
+            IEnumerable<Post> model =  service.GetGlobalTimeline(1, 100);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(string message)
+        {
+
+            IPostRepository postRepository = new PostRepository(MvcApplication.RedisConn);
+            PostService service = new PostService(postRepository);
+            service.SavePost(
+            new Post()
+            {
+                Email = User.Identity.Name,
+                Time = DateTime.Now,
+                Message = message
+            });
+            IEnumerable<Post> model = service.GetGlobalTimeline(0, 100);
+            return View(model);
         }
 
         public ActionResult About()

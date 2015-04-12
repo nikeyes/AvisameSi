@@ -9,7 +9,8 @@ namespace AvisameSi.ServiceLibrary.RespositoryContracts
     public interface IAccountRepository
     {
         bool UserExist(string email);
-        void RegisterUser(string email, string password);
-        bool Login(string email, string password);
+        string RegisterUser(string email, string password);
+        string Login(string email, string password);
+        bool IsUserLogged(string email, string token);
     }
 }

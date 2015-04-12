@@ -39,9 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementations\AvisameSiService.cs" />
+    <Compile Include="Entities\Post.cs" />
+    <Compile Include="Implementations\AccountService.cs" />
+    <Compile Include="Implementations\PostService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RespositoryContracts\IAccountRepository.cs" />
+    <Compile Include="RespositoryContracts\IPostRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
