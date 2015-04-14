@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AvisameSi.ServiceLibrary.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,8 @@ namespace AvisameSi.ServiceLibrary.RespositoryContracts
     public interface IAccountRepository
     {
         bool UserExist(string email);
-        string RegisterUser(string email, string password);
-        string Login(string email, string password);
-        bool IsUserLogged(string email, string token);
+        UserTokenEntity RegisterUser(UserEntity user);
+        UserTokenEntity Login(UserEntity user);
+        bool IsUserLogged(UserEntity user);
     }
 }

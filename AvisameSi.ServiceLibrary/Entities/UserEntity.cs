@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AvisameSi.ServiceLibrary.Entities
 {
-    public class Post
+    public class UserEntity
     {
         public string Email { get; set; }
-        public DateTime Time { get; set; }
-        public string Message {get; set; }
+        public string Password { get; set; }
+        public UserTokenEntity LoggedAuthToken { get; set; }
 
     }
 }

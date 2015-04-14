@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AvisameSi.ServiceLibrary.Entities.Post>
+﻿@model IEnumerable<AvisameSi.ServiceLibrary.Entities.PostEntity>
 @section styles{
 <link rel="stylesheet" href="~/Content/Home/Timeline.css">
 }
@@ -38,7 +38,7 @@
         <h1 id="timeline">Timeline</h1>
     </div>
     <ul class="timeline">
-        @foreach (AvisameSi.ServiceLibrary.Entities.Post post in Model)
+        @foreach (AvisameSi.ServiceLibrary.Entities.PostEntity post in Model)
         {
             <li>
                 <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>

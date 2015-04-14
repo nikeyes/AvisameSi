@@ -1,4 +1,5 @@
-﻿using AvisameSi.ServiceLibrary.Implementations;
+﻿using AvisameSi.ServiceLibrary.Entities;
+using AvisameSi.ServiceLibrary.Implementations;
 using System;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -30,9 +31,16 @@ namespace AvisameSi.WebUI.Security
             {
                 FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookie.Value);
                 string email = ticket.Name;
-                string token = ticket.UserData;
+                UserTokenEntity token = new UserTokenEntity(ticket.UserData);
 
-                if (_avisameSiService.IsUserLogged(email, token))
+
+                UserEntity user = new UserEntity()
+                {
+                    Email = email,
+                    LoggedAuthToken = token
+                };
+
+                if (_avisameSiService.IsUserLogged(user))
                 {
                     var identity = new GenericIdentity(email, "AvisameSi");
                     //identity.AddClaim(new Claim("userEmail", ticket.Name));

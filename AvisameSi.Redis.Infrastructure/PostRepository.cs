@@ -27,7 +27,7 @@ namespace AvisameSi.Redis.Infrastructure
             _redisConn = redisConn;
         }
 
-        public void SavePost(Post post)
+        public void SavePost(PostEntity post)
         {
             CultureInfo culture = new CultureInfo("en-US");
 
@@ -48,13 +48,13 @@ namespace AvisameSi.Redis.Infrastructure
         }
 
 
-        public Post GetPost(string postId)
+        public PostEntity GetPost(string postId)
         {
             CultureInfo culture = new CultureInfo("en-US");
 
             IDatabase redis = _redisConn.GetDatabase();
             Dictionary<RedisValue, RedisValue> hashValues = redis.HashGetAll(REDIS_POST_DATA + postId).ToDictionary();
-            return new Post()
+            return new PostEntity()
             {
                 Email = hashValues[REDIS_POST_DATA_EMAIL],
                 Time = DateTime.Parse(hashValues[REDIS_POST_DATA_TIME], culture.DateTimeFormat),
@@ -63,11 +63,11 @@ namespace AvisameSi.Redis.Infrastructure
 
         }
 
-        public IEnumerable<Post> GetGlobalTimeline(int start, int numElements)
+        public IEnumerable<PostEntity> GetGlobalTimeline(int start, int numElements)
         {
             CultureInfo culture = new CultureInfo("en-US");
 
-            List<Post> postsList = new List<Post>();
+            List<PostEntity> postsList = new List<PostEntity>();
             IDatabase redis = _redisConn.GetDatabase();
             
             RedisValue[] listValues = redis.ListRange(REDIS_GLOBAL_TIMELINE_LIST, start, start+numElements);

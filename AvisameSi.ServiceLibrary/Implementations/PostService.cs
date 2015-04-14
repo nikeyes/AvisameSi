@@ -18,17 +18,17 @@ namespace AvisameSi.ServiceLibrary.Implementations
         }
 
 
-        public void SavePost(Post post)
+        public void SavePost(PostEntity post)
         {
             _postRepository.SavePost(post);
         }
 
-        public Post GetPost(string postId)
+        public PostEntity GetPost(string postId)
         {
             return _postRepository.GetPost(postId);
         }
 
-        public IEnumerable<Post> GetGlobalTimeline(int start, int numElements)
+        public IEnumerable<PostEntity> GetGlobalTimeline(int start, int numElements)
         {
             return _postRepository.GetGlobalTimeline(start, numElements);
         }

@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Post.cs" />
+    <Compile Include="Entities\ChannelEntity.cs" />
+    <Compile Include="Entities\PostEntity.cs" />
+    <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Entities\UserTokenEntity.cs" />
     <Compile Include="Implementations\AccountService.cs" />
     <Compile Include="Implementations\PostService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

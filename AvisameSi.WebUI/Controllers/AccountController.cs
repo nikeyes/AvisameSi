@@ -1,4 +1,5 @@
 ﻿using AvisameSi.Redis.Infrastructure;
+using AvisameSi.ServiceLibrary.Entities;
 using AvisameSi.ServiceLibrary.Implementations;
 using AvisameSi.ServiceLibrary.RespositoryContracts;
 using AvisameSi.WebUI.Security;
@@ -25,11 +26,15 @@ namespace AvisameSi.WebUI.Controllers
         {
             IAccountRepository accountRepository = new AccountRepository(MvcApplication.RedisConn);
             AccountService service = new AccountService(accountRepository);
-            
-            string token = service.Login(email, password);
-            if (!String.IsNullOrWhiteSpace(token))
+            UserEntity user = new UserEntity()
             {
-                AuthCookieHelper.CreateAuthCookie(email, token, false);
+                Email = email,
+                Password = password
+            };
+            UserTokenEntity token = service.Login(user);
+            if (token != null)
+            {
+                AuthCookieHelper.CreateAuthCookie(email, token.GetTokenString(), false);
                 return RedirectToAction("Index", "Home"); 
             }
             else
@@ -54,8 +59,14 @@ namespace AvisameSi.WebUI.Controllers
                 IAccountRepository accountRepository = new AccountRepository(MvcApplication.RedisConn);
                 AccountService service = new AccountService(accountRepository);
                 
-                string token = service.Register(email, password);
-                AuthCookieHelper.CreateAuthCookie(email, token, false);
+                UserEntity user = new UserEntity()
+                {
+                    Email = email,
+                    Password = password
+                };
+
+                UserTokenEntity token = service.Register(user);
+                AuthCookieHelper.CreateAuthCookie(email, token.GetTokenString(), false);
 
                 return RedirectToAction("Index", "Home");
             }

@@ -1,6 +1,7 @@
 ﻿using AvisameSi.ServiceLibrary.RespositoryContracts;
 using System;
 using StackExchange.Redis;
+using AvisameSi.ServiceLibrary.Entities;
 
 
 namespace AvisameSi.Redis.Infrastructure
@@ -30,34 +31,34 @@ namespace AvisameSi.Redis.Infrastructure
             return exists;
         }
 
-        public string RegisterUser(string email, string password)
+        public UserTokenEntity RegisterUser(UserEntity user)
         {
             IDatabase redis = _redisConn.GetDatabase();
             long userId = redis.StringIncrement(REDIS_SEQUENCE_USERS_ID);
-            redis.HashSet(REDIS_USERS_LIST, email, userId.ToString());
+            redis.HashSet(REDIS_USERS_LIST, user.Email, userId.ToString());
             HashEntry[] hashEntryArray = new HashEntry[] {
-                new HashEntry(REDIS_USER_DATA_EMAIL, email),
-                new HashEntry(REDIS_USER_DATA_PASSWORD, password)
+                new HashEntry(REDIS_USER_DATA_EMAIL, user.Email),
+                new HashEntry(REDIS_USER_DATA_PASSWORD, user.Password)
             };
 
             redis.HashSet(REDIS_USER_DATA + userId, hashEntryArray);
 
-            redis.SortedSetAdd(REDIS_USERS_BY_CREATIONDATE, email, DateTime.Now.Ticks);
+            redis.SortedSetAdd(REDIS_USERS_BY_CREATIONDATE, user.Email, DateTime.Now.Ticks);
 
-            string token = CreateLoggedUserToken(userId.ToString());
-            return token;
+            UserTokenEntity token = CreateLoggedUserToken(userId.ToString());
+            return  token;
         }
 
 
-        public string Login(string email, string password)
+        public UserTokenEntity Login(UserEntity user)
         {
-            string token = String.Empty;
+            UserTokenEntity token = null;
             IDatabase redis = _redisConn.GetDatabase();
-            string userId = redis.HashGet(REDIS_USERS_LIST, email);
+            string userId = redis.HashGet(REDIS_USERS_LIST, user.Email);
             if (!string.IsNullOrEmpty(userId))
             {
                 string storedPassword = redis.HashGet(REDIS_USER_DATA + userId, REDIS_USER_DATA_PASSWORD);
-                if (password == storedPassword)
+                if (user.Password == storedPassword)
                 {
                     token = CreateLoggedUserToken(userId);
                 }
@@ -65,13 +66,13 @@ namespace AvisameSi.Redis.Infrastructure
             return token;
         }
 
-        public bool IsUserLogged(string email, string token)
+        public bool IsUserLogged(UserEntity user)
         {
             bool result = false;
             IDatabase redis = _redisConn.GetDatabase();
-            string userId = redis.HashGet(REDIS_USERS_LIST, email);
+            string userId = redis.HashGet(REDIS_USERS_LIST, user.Email);
             String loggedToken = redis.HashGet(REDIS_USER_DATA + userId, REDIS_USER_DATA_LOGGED_AUTH);
-            if (token == loggedToken)
+            if (user.LoggedAuthToken.GetTokenString() == loggedToken)
             {
                 result = true;
             }
@@ -79,13 +80,12 @@ namespace AvisameSi.Redis.Infrastructure
 
         }
 
-        private String CreateLoggedUserToken(string userId)
+        private UserTokenEntity CreateLoggedUserToken(string userId)
         {
             IDatabase redis = _redisConn.GetDatabase();
-
-            String token = Guid.NewGuid().ToString();
-            redis.HashSet(REDIS_USER_DATA + userId, REDIS_USER_DATA_LOGGED_AUTH, token);
-            return token;
+            UserTokenEntity userToken = new UserTokenEntity();
+            redis.HashSet(REDIS_USER_DATA + userId, REDIS_USER_DATA_LOGGED_AUTH, userToken.GetTokenString());
+            return userToken;
 
         }
     }

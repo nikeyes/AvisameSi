@@ -9,8 +9,8 @@ namespace AvisameSi.ServiceLibrary.RespositoryContracts
 {
     public interface IPostRepository
     {
-        void SavePost(Post post);
-        Post GetPost(string postId);
-        IEnumerable<Post> GetGlobalTimeline(int start, int numElements);
+        void SavePost(PostEntity post);
+        PostEntity GetPost(string postId);
+        IEnumerable<PostEntity> GetGlobalTimeline(int start, int numElements);
     }
 }

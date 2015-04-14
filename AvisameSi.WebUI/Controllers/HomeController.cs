@@ -19,7 +19,7 @@ namespace AvisameSi.WebUI.Controllers
 
             IPostRepository postRepository = new PostRepository(MvcApplication.RedisConn);
             PostService service = new PostService(postRepository);
-            IEnumerable<Post> model =  service.GetGlobalTimeline(1, 100);
+            IEnumerable<PostEntity> model =  service.GetGlobalTimeline(1, 100);
             return View(model);
         }
 
@@ -30,13 +30,13 @@ namespace AvisameSi.WebUI.Controllers
             IPostRepository postRepository = new PostRepository(MvcApplication.RedisConn);
             PostService service = new PostService(postRepository);
             service.SavePost(
-            new Post()
+            new PostEntity()
             {
                 Email = User.Identity.Name,
                 Time = DateTime.Now,
                 Message = message
             });
-            IEnumerable<Post> model = service.GetGlobalTimeline(0, 100);
+            IEnumerable<PostEntity> model = service.GetGlobalTimeline(0, 100);
             return View(model);
         }
 
